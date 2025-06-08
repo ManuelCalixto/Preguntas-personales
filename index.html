@@ -1,173 +1,166 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Juego de Preguntas sobre Mí</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #00c6ff, #0072ff);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego de Preguntas sobre Mí</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        .container {
-            text-align: center;
-            background-color: rgba(0, 0, 0, 0.3);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 0 15px black;
-            width: 90%;
-            max-width: 600px;
-        }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 10px;
+    }
 
-        .titulo {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
+    .container {
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px black;
+      width: 100%;
+      max-width: 500px;
+    }
 
-        button {
-            background-color: white;
-            color: #0072ff;
-            border: none;
-            padding: 10px 20px;
-            margin: 8px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
+    .titulo {
+      font-size: 1.8em;
+      margin-bottom: 20px;
+    }
 
-        button:hover {
-            background-color: #000000;
-            color: white;
-        }
+    #question {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
 
-        .correcta {
-            background-color: #28a745 !important;
-            color: white !important;
-        }
+    button {
+      background-color: white;
+      color: #0072ff;
+      border: none;
+      padding: 12px 16px;
+      margin: 6px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      width: 100%;
+      max-width: 300px;
+    }
 
-        .incorrecta {
-            background-color: #dc3545 !important;
-            color: white !important;
-        }
+    button:hover {
+      background-color: #000;
+      color: white;
+    }
 
-        .fade-in {
-            animation: fadeIn 1s ease-in-out;
-        }
+    .correcta {
+      background-color: #28a745 !important;
+      color: white !important;
+    }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
+    .incorrecta {
+      background-color: #dc3545 !important;
+      color: white !important;
+    }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #score {
+      margin-top: 20px;
+      font-size: 1em;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="container">
-        <h1 class="titulo">¿Cuánto sabes sobre mí?</h1>
-        <div id="game">
-            <div id="question" class="fade-in"></div>
-            <div id="options"></div>
-            <div id="score"></div>
-        </div>
+  <div class="container">
+    <h1 class="titulo">¿Cuánto sabes sobre mí?</h1>
+    <div id="game">
+      <div id="question" class="fade-in"></div>
+      <div id="options"></div>
+      <div id="score"></div>
     </div>
+  </div>
 
-    <script>
-        const preguntas = [
-            {
-                pregunta: "¿Cuál es mi comida favorita?",
-                opciones: ["Pizza", "Hamburguesa", "Tacos"],
-                correcta: "Tacos"
-            },
-            {
-                pregunta: "¿Cuál es mi color favorito?",
-                opciones: ["Azul", "Verde", "Negro"],
-                correcta: "Negro"
-            },
-            {
-                pregunta: "¿Qué deporte me gusta más?",
-                opciones: ["Fútbol", "Básquetbol", "Tenis"],
-                correcta: "Fútbol"
-            },
+  <script>
+    const preguntas = [
+      { pregunta: "¿Cuál es mi comida favorita?", opciones: ["Pizza", "Hamburguesa", "Tacos"], correcta: "Tacos" },
+      { pregunta: "¿Cuál es mi color favorito?", opciones: ["Azul", "Verde", "Negro"], correcta: "Negro" },
+      { pregunta: "¿Qué deporte me gusta más?", opciones: ["Fútbol", "Básquetbol", "Tenis"], correcta: "Fútbol" },
+      { pregunta: "¿Cuál es mi hobby favorito?", opciones: ["Leer", "programar", "Jugar videojuegos"], correcta: "programar" },
+      { pregunta: "¿En qué año nací?", opciones: ["2001", "2003", "2002", "2025"], correcta: "2003" },
+    ];
 
-            {
-                pregunta: "¿Cuál es mi hobby favorito?",
-                opciones: ["Leer", "programar", "Jugar videojuegos"],
-                correcta: "programar"
-            },
-            {
-                pregunta: "¿En que año naci?",
-                opciones: ["2001", "2003", "2002", "2025"],
-                correcta: "2003"
-            },
+    let indice = 0;
+    let puntaje = 0;
 
+    function mostrarPregunta() {
+      if (indice >= preguntas.length) {
+        document.getElementById("question").innerText = "¡Juego terminado!";
+        document.getElementById("options").innerHTML = "";
+        document.getElementById("score").innerText = `Puntaje final: ${puntaje}/${preguntas.length}`;
+        return;
+      }
 
-        ];
-        let indice = 0;
-        let puntaje = 0;
+      const actual = preguntas[indice];
+      document.getElementById("question").innerText = actual.pregunta;
 
-        function mostrarPregunta() {
-            if (indice >= preguntas.length) {
-                document.getElementById("question").innerText = "¡Juego terminado!";
-                document.getElementById("options").innerHTML = "";
-                document.getElementById("score").innerText = `Puntaje final: ${puntaje}/${preguntas.length}`;
-                return;
-            }
+      const opcionesDiv = document.getElementById("options");
+      opcionesDiv.innerHTML = "";
 
-            const actual = preguntas[indice];
-            document.getElementById("question").innerText = actual.pregunta;
+      actual.opciones.forEach(opcion => {
+        const btn = document.createElement("button");
+        btn.innerText = opcion;
+        btn.onclick = () => verificarRespuesta(btn, actual);
+        opcionesDiv.appendChild(btn);
+      });
 
-            const opcionesDiv = document.getElementById("options");
-            opcionesDiv.innerHTML = "";
+      document.getElementById("score").innerText = `Puntaje: ${puntaje}`;
+    }
 
-            actual.opciones.forEach(opcion => {
-                const btn = document.createElement("button");
-                btn.innerText = opcion;
-                btn.onclick = () => verificarRespuesta(btn, actual);
-                opcionesDiv.appendChild(btn);
-            });
-
-            document.getElementById("score").innerText = `Puntaje: ${puntaje}`;
+    function verificarRespuesta(btnSeleccionado, pregunta) {
+      const botones = document.querySelectorAll("#options button");
+      botones.forEach(btn => {
+        if (btn.innerText === pregunta.correcta) {
+          btn.classList.add("correcta");
         }
-
-        function verificarRespuesta(btnSeleccionado, pregunta) {
-            const botones = document.querySelectorAll("#options button");
-            botones.forEach(btn => {
-                if (btn.innerText === pregunta.correcta) {
-                    btn.classList.add("correcta");
-                }
-                if (btn === btnSeleccionado && btn.innerText !== pregunta.correcta) {
-                    btn.classList.add("incorrecta");
-                }
-                btn.disabled = true;
-            });
-
-            if (btnSeleccionado.innerText === pregunta.correcta) {
-                puntaje++;
-            }
-
-            setTimeout(() => {
-                indice++;
-                mostrarPregunta();
-            }, 2000);
+        if (btn === btnSeleccionado && btn.innerText !== pregunta.correcta) {
+          btn.classList.add("incorrecta");
         }
+        btn.disabled = true;
+      });
 
+      if (btnSeleccionado.innerText === pregunta.correcta) {
+        puntaje++;
+      }
+
+      setTimeout(() => {
+        indice++;
         mostrarPregunta();
-    </script>
-</body>
+      }, 2000);
+    }
 
+    mostrarPregunta();
+  </script>
+</body>
 </html>
