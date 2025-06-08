@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Juego de Preguntas sobre Mí</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 15px black;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .titulo {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: white;
+            color: #0072ff;
+            border: none;
+            padding: 10px 20px;
+            margin: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #000000;
+            color: white;
+        }
+
+        .correcta {
+            background-color: #28a745 !important;
+            color: white !important;
+        }
+
+        .incorrecta {
+            background-color: #dc3545 !important;
+            color: white !important;
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="titulo">¿Cuánto sabes sobre mí?</h1>
+        <div id="game">
+            <div id="question" class="fade-in"></div>
+            <div id="options"></div>
+            <div id="score"></div>
+        </div>
+    </div>
+
+    <script>
+        const preguntas = [
+            {
+                pregunta: "¿Cuál es mi comida favorita?",
+                opciones: ["Pizza", "Hamburguesa", "Tacos"],
+                correcta: "Tacos"
+            },
+            {
+                pregunta: "¿Cuál es mi color favorito?",
+                opciones: ["Azul", "Verde", "Negro"],
+                correcta: "Negro"
+            },
+            {
+                pregunta: "¿Qué deporte me gusta más?",
+                opciones: ["Fútbol", "Básquetbol", "Tenis"],
+                correcta: "Fútbol"
+            },
+
+            {
+                pregunta: "¿Cuál es mi hobby favorito?",
+                opciones: ["Leer", "programar", "Jugar videojuegos"],
+                correcta: "programar"
+            },
+            {
+                pregunta: "¿En que año naci?",
+                opciones: ["2001", "2003", "2002", "2025"],
+                correcta: "2003"
+            },
+
+
+        ];
+        let indice = 0;
+        let puntaje = 0;
+
+        function mostrarPregunta() {
+            if (indice >= preguntas.length) {
+                document.getElementById("question").innerText = "¡Juego terminado!";
+                document.getElementById("options").innerHTML = "";
+                document.getElementById("score").innerText = `Puntaje final: ${puntaje}/${preguntas.length}`;
+                return;
+            }
+
+            const actual = preguntas[indice];
+            document.getElementById("question").innerText = actual.pregunta;
+
+            const opcionesDiv = document.getElementById("options");
+            opcionesDiv.innerHTML = "";
+
+            actual.opciones.forEach(opcion => {
+                const btn = document.createElement("button");
+                btn.innerText = opcion;
+                btn.onclick = () => verificarRespuesta(btn, actual);
+                opcionesDiv.appendChild(btn);
+            });
+
+            document.getElementById("score").innerText = `Puntaje: ${puntaje}`;
+        }
+
+        function verificarRespuesta(btnSeleccionado, pregunta) {
+            const botones = document.querySelectorAll("#options button");
+            botones.forEach(btn => {
+                if (btn.innerText === pregunta.correcta) {
+                    btn.classList.add("correcta");
+                }
+                if (btn === btnSeleccionado && btn.innerText !== pregunta.correcta) {
+                    btn.classList.add("incorrecta");
+                }
+                btn.disabled = true;
+            });
+
+            if (btnSeleccionado.innerText === pregunta.correcta) {
+                puntaje++;
+            }
+
+            setTimeout(() => {
+                indice++;
+                mostrarPregunta();
+            }, 2000);
+        }
+
+        mostrarPregunta();
+    </script>
+</body>
+
+</html>
