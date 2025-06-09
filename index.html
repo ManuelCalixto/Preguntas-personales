@@ -100,8 +100,8 @@
       { pregunta: "¿Cuál es mi hobby favorito?", opciones: ["Leer", "programar", "Jugar videojuegos"], correcta: "programar" },
       { pregunta: "¿Actualmente que auto tengo?", opciones: ["RAM TRXT", "RAM RXT", "JEEP SRT", "RAM TRX"], correcta: "RAM TRX" },
       { pregunta: "¿Como se llamaa la profesion que tengo?", opciones: ["ING EN SISTEMAS", "ING EN INFORMATICA", "ING DESARROLLO Y GESTION DE SOFTWARE"], correcta: "ING DESARROLLO Y GESTION DE SOFTWARE" },
-      {pregunta: "¿Me gusta el café?", opciones: ["si", "no",  "en vez en cuando"], correcta: "si" },
-    {pregunta: "¿Cual es mi fruta favorita?", opciones: ["Manzana", "Durazno",  "Piña", "Mango"], correcta: "Piña" }
+      { pregunta: "¿Me gusta el café?", opciones: ["si", "no",  "en vez en cuando"], correcta: "si" },
+      { pregunta: "¿Cual es mi fruta favorita?", opciones: ["Manzana", "Durazno",  "Piña", "Mango"], correcta: "Piña" }
     ];
 
     let indice = 0;
@@ -142,17 +142,22 @@
 
       const botones = document.querySelectorAll("#options button");
       botones.forEach(btn => {
-        if (btn.innerText === pregunta.correcta) {
-          btn.classList.add("correcta");
-        }
-        if (btn === btnSeleccionado && btn.innerText !== pregunta.correcta) {
-          btn.classList.add("incorrecta");
+        if (btn === btnSeleccionado) {
+          if (btn.innerText === pregunta.correcta) {
+            btn.classList.add("correcta");
+          } else {
+            btn.classList.add("incorrecta");
+          }
         }
         btn.disabled = true;
       });
 
       if (btnSeleccionado.innerText === pregunta.correcta) {
         puntaje++;
+        setTimeout(() => {
+          indice++;
+          mostrarPregunta();
+        }, 2000);
       } else {
         vidas--;
         if (vidas <= 0) {
@@ -163,14 +168,14 @@
             document.getElementById("score").innerText = `Puntaje final: ${puntaje}/${preguntas.length}`;
             document.getElementById("vidas").innerText = `Vidas: 0`;
           }, 1000);
-          return;
+        } else {
+          setTimeout(() => {
+            mostrarPregunta(); // repite la misma pregunta
+          }, 2000);
         }
       }
 
-      setTimeout(() => {
-        indice++;
-        mostrarPregunta();
-      }, 2000);
+      document.getElementById("vidas").innerText = `Vidas restantes: ${vidas}`;
     }
 
     mostrarPregunta();
