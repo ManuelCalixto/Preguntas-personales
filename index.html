@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Juego de Preguntas sobre Mí</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: Arial, sans-serif;
@@ -56,38 +54,29 @@
     }
 
     button:hover {
-      background-color: #000;
-      color: white;
+      background-color: #000000;
+      color: #0072ff;
     }
 
-    .correcta {
-      background-color: #28a745 !important;
-      color: white !important;
-    }
-
-    .incorrecta {
-      background-color: #dc3545 !important;
-      color: white !important;
-    }
+    .correcta { background-color: #28a745 !important; color: white !important; }
+    .incorrecta { background-color: #dc3545 !important; color: white !important; }
 
     .fade-in {
       animation: fadeIn 0.5s ease-in-out;
     }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     #score {
       margin-top: 20px;
+      font-size: 1em;
+    }
+
+    #vidas {
+      margin-top: 10px;
       font-size: 1em;
     }
   </style>
@@ -99,6 +88,7 @@
       <div id="question" class="fade-in"></div>
       <div id="options"></div>
       <div id="score"></div>
+      <div id="vidas"></div>
     </div>
   </div>
 
@@ -108,17 +98,25 @@
       { pregunta: "¿Cuál es mi color favorito?", opciones: ["Azul", "Verde", "Negro"], correcta: "Negro" },
       { pregunta: "¿Qué deporte me gusta más?", opciones: ["Fútbol", "Básquetbol", "Tenis"], correcta: "Fútbol" },
       { pregunta: "¿Cuál es mi hobby favorito?", opciones: ["Leer", "programar", "Jugar videojuegos"], correcta: "programar" },
-      { pregunta: "¿En qué año nací?", opciones: ["2001", "2003", "2002", "2025"], correcta: "2003" },
+      { pregunta: "¿Actualmente que auto tengo?", opciones: ["RAM TRXT", "RAM RXT", "JEEP SRT", "RAM TRX"], correcta: "RAM TRX" },
+      { pregunta: "¿Como se llamaa la profesion que tengo?", opciones: ["ING EN SISTEMAS", "ING EN INFORMATICA", "ING DESARROLLO Y GESTION DE SOFTWARE"], correcta: "ING DESARROLLO Y GESTION DE SOFTWARE" },
+      {pregunta: "¿Me gusta el café?", opciones: ["si", "no",  "en vez en cuando"], correcta: "si" },
+    {pregunta: "¿Cual es mi fruta favorita?", opciones: ["Manzana", "Durazno",  "Piña", "Mango"], correcta: "Piña" }
     ];
 
     let indice = 0;
     let puntaje = 0;
+    let vidas = 2;
+    let juegoTerminado = false;
 
     function mostrarPregunta() {
+      if (juegoTerminado) return;
+
       if (indice >= preguntas.length) {
         document.getElementById("question").innerText = "¡Juego terminado!";
         document.getElementById("options").innerHTML = "";
         document.getElementById("score").innerText = `Puntaje final: ${puntaje}/${preguntas.length}`;
+        document.getElementById("vidas").innerText = `Vidas restantes: ${vidas}`;
         return;
       }
 
@@ -136,9 +134,12 @@
       });
 
       document.getElementById("score").innerText = `Puntaje: ${puntaje}`;
+      document.getElementById("vidas").innerText = `Vidas restantes: ${vidas}`;
     }
 
     function verificarRespuesta(btnSeleccionado, pregunta) {
+      if (juegoTerminado) return;
+
       const botones = document.querySelectorAll("#options button");
       botones.forEach(btn => {
         if (btn.innerText === pregunta.correcta) {
@@ -152,6 +153,18 @@
 
       if (btnSeleccionado.innerText === pregunta.correcta) {
         puntaje++;
+      } else {
+        vidas--;
+        if (vidas <= 0) {
+          juegoTerminado = true;
+          setTimeout(() => {
+            document.getElementById("question").innerText = "¡Se te terminaron las oportunidades!";
+            document.getElementById("options").innerHTML = "";
+            document.getElementById("score").innerText = `Puntaje final: ${puntaje}/${preguntas.length}`;
+            document.getElementById("vidas").innerText = `Vidas: 0`;
+          }, 1000);
+          return;
+        }
       }
 
       setTimeout(() => {
